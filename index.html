@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>致我的漂亮妈妈</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffe6eb 0%, #ffc2d1 40%, #ff9eb5 100%);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 飘浮爱心背景 */
+.floating-heart {
+  position: fixed;
+  color: rgba(255,255,255,0.55);
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatUp 6s linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(110vh) scale(0.4) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.5; }
+  100% { transform: translateY(-10vh) scale(1.1) rotate(360deg); opacity: 0; }
+}
+
+/* 启动封面 */
+#cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffe6eb 0%, #ffc2d1 40%, #ff9eb5 100%);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+#cover.hide {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.envelope-box {
+  width: 130px; height: 130px;
+  margin-bottom: 28px;
+  filter: drop-shadow(0 8px 20px rgba(255,77,109,0.25));
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.cover-title {
+  color: #9e2a3b;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 8px rgba(158,42,59,0.15);
+}
+.cover-sub {
+  color: #c9184a;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+  opacity: 0.85;
+}
+
+.tap-btn {
+  padding: 16px 56px;
+  background: #fff;
+  color: #ff4d6d;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(255, 77, 109, 0.35);
+  animation: pulse 2.2s ease-in-out infinite;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: transform 0.2s;
+}
+.tap-btn:active { transform: scale(0.95); }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(255,77,109,0.35); }
+  50% { transform: scale(1.06); box-shadow: 0 10px 32px rgba(255,77,109,0.5); }
+}
+
+/* 视频播放页 */
+#video-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease 0.2s;
+  z-index: 10;
+}
+#video-stage.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.video-box {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 50px rgba(180, 30, 70, 0.3);
+  background: #000;
+}
+video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 结束祝福页 */
+#end-card {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+  z-index: 20;
+  background: linear-gradient(135deg, #ffe6eb 0%, #ffc2d1 40%, #ff9eb5 100%);
+}
+#end-card.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.paper {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 24px;
+  padding: 44px 32px;
+  box-shadow: 0 12px 40px rgba(201, 24, 74, 0.2);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.paper::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,200,210,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.end-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+.end-text {
+  font-size: 20px;
+  line-height: 2.2;
+  color: #5a1a2a;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+.end-signature {
+  margin-top: 28px;
+  font-size: 17px;
+  color: #c9184a;
+  letter-spacing: 2px;
+}
+
+.hearts-bar {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.hearts-bar span {
+  font-size: 16px;
+  color: #ffb3c6;
+  animation: heartPop 1s ease-out forwards;
+  opacity: 0;
+}
+.hearts-bar span:nth-child(1) { animation-delay: 0.1s; }
+.hearts-bar span:nth-child(2) { animation-delay: 0.2s; }
+.hearts-bar span:nth-child(3) { animation-delay: 0.3s; }
+.hearts-bar span:nth-child(4) { animation-delay: 0.4s; }
+.hearts-bar span:nth-child(5) { animation-delay: 0.5s; }
+.hearts-bar span:nth-child(6) { animation-delay: 0.6s; }
+.hearts-bar span:nth-child(7) { animation-delay: 0.7s; }
+.hearts-bar span:nth-child(8) { animation-delay: 0.8s; }
+.hearts-bar span:nth-child(9) { animation-delay: 0.9s; }
+.hearts-bar span:nth-child(10){ animation-delay: 1.0s; }
+@keyframes heartPop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.replay-btn {
+  margin-top: 28px;
+  padding: 12px 36px;
+  background: #ff4d6d;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255,77,109,0.35);
+}
+.replay-btn:active { transform: scale(0.96); }
+</style>
+</head>
+<body>
+
+<script>
+for(let i=0;i<10;i++){
+  let h=document.createElement('div');
+  h.className='floating-heart';
+  h.innerHTML='❤';
+  h.style.left=(Math.random()*95+2)+'vw';
+  h.style.fontSize=(14+Math.random()*20)+'px';
+  h.style.animationDuration=(5+Math.random()*5)+'s';
+  h.style.animationDelay=(Math.random()*6)+'s';
+  document.body.appendChild(h);
+}
+</script>
+
+<div id="cover">
+  <div class="envelope-box">
+    <svg viewBox="0 0 100 100" width="130" height="130">
+      <defs>
+        <linearGradient id="pt1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8fa3"/><stop offset="100%" stop-color="#ff4d6d"/></linearGradient>
+        <linearGradient id="pt2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb3c6"/><stop offset="100%" stop-color="#ff758f"/></linearGradient>
+        <linearGradient id="pt3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd6e0"/><stop offset="100%" stop-color="#ff8fa3"/></linearGradient>
+      </defs>
+      <path d="M20,55 Q50,75 80,55 L80,80 Q80,85 75,85 L25,85 Q20,85 20,80 Z" fill="#ffe5ec" stroke="#ffccd5" stroke-width="2"/>
+      <path d="M20,55 L50,72 L80,55" fill="none" stroke="#ffccd5" stroke-width="2"/>
+      <text x="32" y="78" font-size="11" fill="#c9184a" font-family="Arial" font-weight="bold">to MOM</text>
+      <ellipse cx="38" cy="42" rx="10" ry="14" fill="url(#pt1)" transform="rotate(-20 38 42)"/>
+      <ellipse cx="62" cy="42" rx="10" ry="14" fill="url(#pt2)" transform="rotate(20 62 42)"/>
+      <ellipse cx="50" cy="36" rx="10" ry="14" fill="url(#pt3)"/>
+      <ellipse cx="50" cy="52" rx="9" ry="12" fill="#ffccd5"/>
+      <path d="M45,58 Q35,68 30,62" fill="none" stroke="#70e000" stroke-width="3" stroke-linecap="round"/>
+      <path d="M55,58 Q65,68 70,62" fill="none" stroke="#70e000" stroke-width="3" stroke-linecap="round"/>
+      <text x="16" y="34" font-size="11" fill="#e01e37">❤</text>
+      <text x="72" y="29" font-size="11" fill="#e01e37">❤</text>
+    </svg>
+  </div>
+  <div class="cover-title">致我的漂亮妈妈</div>
+  <div class="cover-sub">有一份祝福请查收</div>
+  <button class="tap-btn" onclick="startPlay()">💌 点击打开</button>
+</div>
+
+<div id="video-stage">
+  <div class="video-box">
+    <video id="mainVideo" src="1000019559.mp4" playsinline webkit-playsinline x5-playsinline preload="auto"></video>
+  </div>
+</div>
+
+<div id="end-card">
+  <div class="paper">
+    <div class="end-icon">💐</div>
+    <div class="end-text">
+      致：我的漂亮妈妈<br>
+      节日快乐！<br>
+      谢谢你成为我的妈妈<br>
+      给我最无私最伟大的爱<br>
+      希望你在未来的日子<br>
+      要多爱自己，多享受生活<br>
+      你永远年轻漂亮，我永远爱你
+    </div>
+    <div class="end-signature">爱你的女儿</div>
+    <div class="hearts-bar">
+      <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+      <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+    </div>
+    <button class="replay-btn" onclick="replay()">再看一遍</button>
+  </div>
+</div>
+
+<audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
+
+<script>
+const cover = document.getElementById('cover');
+const videoStage = document.getElementById('video-stage');
+const endCard = document.getElementById('end-card');
+const video = document.getElementById('mainVideo');
+const bgm = document.getElementById('bgm');
+
+function startPlay() {
+  cover.classList.add('hide');
+  videoStage.classList.add('show');
+  safePlay(video);
+  safePlay(bgm);
+  if (typeof WeixinJSBridge !== 'undefined') {
+    WeixinJSBridge.invoke('getNetworkType', {}, function() {
+      safePlay(video);
+      safePlay(bgm);
+    });
+  }
+}
+function safePlay(media) {
+  const p = media.play();
+  if (p && p.catch) p.catch(()=>{});
+}
+video.addEventListener('ended', function() {
+  videoStage.style.opacity = '0';
+  videoStage.style.pointerEvents = 'none';
+  setTimeout(() => { endCard.classList.add('show'); }, 300);
+});
+function replay() {
+  endCard.classList.remove('show');
+  videoStage.style.opacity = '1';
+  videoStage.style.pointerEvents = 'auto';
+  video.currentTime = 0;
+  safePlay(video);
+  if (bgm.paused) safePlay(bgm);
+}
+if (typeof WeixinJSBridge !== 'undefined') {
+  document.addEventListener('WeixinJSBridgeReady', function(){});
+}
+</script>
+
+</body>
+</html>
